@@ -1,5 +1,7 @@
-require_relative '../lib/board.rb'
-require_relative '../lib/player.rb'
+# frozen_string_literal: true
+
+require_relative '../lib/board'
+require_relative '../lib/player'
 
 describe Board do
   subject(:table) { described_class.new }
