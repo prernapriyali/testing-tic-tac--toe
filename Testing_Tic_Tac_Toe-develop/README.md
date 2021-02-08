@@ -28,7 +28,7 @@ Players soon discover that the best play from both parties leads to a draw. Henc
 
 To get a local copy up and running follow these simple example steps in your terminal.
 
-- `git clone https://github.com/AymenBida/Testing_Tic_Tac_Toe.git`
+- `git clone https://github.com/prernapriyali/testing-tic-tac--toe.git`
 - `cd Testing_Tic_Tac_Toe`
 - `rspec spec/board_spec.rb`
 
