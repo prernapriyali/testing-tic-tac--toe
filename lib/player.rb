@@ -1,11 +1,12 @@
-# frozen_string_literal: true
-
 class Player
-  attr_reader :name, :marker
-  attr_writer :name
+  attr_reader :name, :symbol
 
-  def initialize(marker, name = 'Player')
-    @marker = marker
+  def initialize(name, symbol)
     @name = name
+    @symbol = symbol
+  end
+
+  def switch_player(current_player, opponent)
+    current_player == self ? opponent : self
   end
 end

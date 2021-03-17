@@ -1,21 +1,20 @@
-# frozen_string_literal: true
-
+require 'spec_helper'
 require_relative '../lib/player'
 
-RSpec.describe Player do
-  let!(:player) { Player.new('X', 'Dan') }
+describe Player do
+  let(:player1) { Player.new('David', 'O') }
+  let(:player2) { Player.new('Oyinda', 'X') }
+  let(:active_player) { player1 }
 
-  it ' Test our player name ' do
-    expect(player.name).to eql('Dan')
-  end
-  it ' Not Test our player name ' do
-    expect(player.name).not_to eql('Maya')
+  describe '#initialize' do
+    it 'used to create new player objects' do
+      expect(player1.name).to eql('David')
+    end
   end
 
-  it ' Test our player marker ' do
-    expect(player.marker).to eql('X')
-  end
-  it ' Not Test our player marker ' do
-    expect(player.marker).not_to eql('O')
+  describe '#switch_player' do
+    it 'switches player' do
+      expect(player1.switch_player(active_player, player2)).to eql(player2)
+    end
   end
 end

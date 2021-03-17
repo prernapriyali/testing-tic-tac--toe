@@ -1,91 +1,45 @@
-# frozen_string_literal: true
-
-require_relative '../lib/player'
+require_relative 'spec_helper'
 require_relative '../lib/board'
-require_relative '../lib/game'
+require_relative '../lib/player'
 
-RSpec.describe Board do
-  let!(:board) { Board.new }
-  let!(:tie) do
-    Board.new(
-      1 => 'X', 2 => 'X', 3 => 'O',
-      4 => 'O', 5 => 'X', 6 => 'X',
-      7 => 'X', 8 => '0', 9 => 'O'
-    )
-  end
-  context 'when a new board is created' do
-    describe '#initialize' do
-      it 'should create a new empty board' do
-        board = Board.new
-        expect(board.grid[0]).to eq '@ '
-      end
-      it 'should create a board with a given grid' do
-        tie = Board.new(
-          1 => 'X', 2 => 'X', 3 => 'O',
-          4 => 'O', 5 => 'X', 6 => 'X',
-          7 => 'X', 8 => '0', 9 => 'O'
-        )
-        expect(tie.grid[1]).to eq 'X'
-      end
+describe Board do
+  let(:board) { Board.new }
+  let(:player1) { Player.new('David', 'X') }
+  let(:player2) { Player.new('Oyinda', 'O') }
+  let(:active_player) { player1 }
+
+  describe '#initialize' do
+    it 'initializes the board' do
+      expect(board.board).to eql([1, 2, 3, 4, 5, 6, 7, 8, 9])
     end
   end
-  context 'display game board' do
-    describe '#display' do
-      it 'should display grid length' do
-        expect(board.grid.length).to eq(9)
-      end
+
+  describe '#draw?' do
+    it 'returns draw if the game is in a tie' do
+      board.board = %w[X O X O X O O X O]
+      expect(board.draw?).to eql(true)
+    end
+
+    it 'returns false if board array is not empty' do
+      expect(board.draw?).to eql(false)
     end
   end
-  context 'check place selection' do
-    describe '#valid_selection' do
-      it 'should return true when select a valid position' do
-        board = Board.new
-        expect(board.valid_selection?(8)).to eq true
-      end
-      it 'should return false when select a valid position' do
-        board = Board.new
-        expect(board.valid_selection?(10)).to eq false
-      end
+
+  describe '#win?' do
+    it 'updates board base on the position active player picks' do
+      board.board = [1, 2, 3, 'X', 'X', 'X', 7, 8, 9]
+      expect(board.win?).to eql(true)
+    end
+
+    it 'returns false for faulty combination [1,4,9]' do
+      board.board = [1, 2, 3, 4, 'O', 'X', 'X', 7, 8, 9]
+      expect(board.win?).to eql(false)
     end
   end
-  context 'check for place marker' do
-    describe '#place_marker' do
-      it 'should place marker at the right position' do
-        board = Board.new
-        expect(board.place_marker(5, 'X')).to eql(board.grid[4])
-      end
-    end
-  end
-  context 'check for winning lines' do
-    describe '#winning_lines' do
-      it 'should win at the right values' do
-        dbl = double(board)
-        allow(dbl).to receive(:winning_lines).and_return('win')
-      end
-    end
-  end
-  context 'check for win' do
-    describe '#win' do
-      it 'should return win if game won' do
-        dbl = double(board)
-        allow(dbl).to receive(:win).and_return('Player won')
-      end
-    end
-  end
-  context 'check for tie' do
-    describe '#tie' do
-      it 'should return tie if no win' do
-        dbl = double(board)
-        allow(dbl).to receive(:tie).and_return('Game is tie')
-      end
-    end
-  end
-  context 'check for display' do
-    describe '#display' do
-      it 'check if two strings are equal' do
-        dbl = double(board)
-        allow(dbl).to receive(:display).and_return(@grid)
-      end
+
+  describe '#update_board' do
+    it 'updates board base on the position active player chooses' do
+      expect(board.update_board(active_player, 2, player1, player2)).to eql('X')
     end
   end
 end

@@ -1,50 +1,110 @@
-# * *Testing Tic-Tac-Toe Game.**
+## TIC TAC TOE GAME
 
-This a rspec test suite of Tic-Tac-Toe using Ruby. The project is meant to reinforce TDD concepts using the rspec Ruby framework.
+​
+## About the Project
+​
+This project is to build a Tic Tac Toe game which can be played on the command line.
+Two human players can play against each other and the board is displayed in between turns.
+We built this project following some requirements: 
+​
+- The main.rb file should be responsible for user interaction, and this is the only place where puts/print and get.chomp can be used
+- Comply with [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) rule
+- Set the permission for reading and writing with attr_accessor, attr_reader properly to Classes
+- Include the validation for user's inputs to correspond to unpredictable behavior from players
+​
+​
+## Table of Contents
+* [About the Project](#about-the-project)
+* [Built With](#built-with)
+* [Live Demo](#live-demo)
+* [Getting Started](#getting-started)
+* [About Tic Tac Toe](#about-tic-tac-toe)
+* [How to Play](#how-to-play)
+* [Contributing](#contributing)
+* [Authors](#authors)
+* [Acknowlegments](#acknowlegments)
+* [Show your support](#show-your-support)
+* [License](#license)
+​
+## Built With
+* [Ruby](https://www.ruby-lang.org/en/)
 
-## **How to play our game**
+## Getting Started
+​
+To get a local copy up and running follow these simple example steps.
+​
+1. On the project GitHub page, navigate to the main page of the repository.
+2. Under the repository name, locate and click on a green button named `Code`. 
+3. Copy the project URL as displayed.
+4. If you're running the Windows Operating System, open your command prompt. On Linux, Open your terminal. 
+5. Change the current working directory to the location where you want the cloned directory to be made. Leave as it is if the current location is where you want the project to be. 
+6. Type git clone, and then paste the URL you copied in Step 3. <br>
+e.g. git clone https://github.com/Murodjon000/Tic_Tac.git
+7. Press Enter. Your local copy will be created. 
+8. Go into the folder you cloned in this step 7 on your terminal
+e.g. cd Tic_Tac
+9. Type `bin/main.rb` to run the code, and then the game starts!
 
-Our game is a command line game so you need to be in a terminal, or terminal like environment, to run it.
+​
+​
+## About Tic Tac Toe
+​
+Tic Tac Toe is a simple game for 2 players, X and O. 
+It is played on a 3x3 grid. 
+Players take turns placing their Mark, X or O, on an open square in the grid. 
+The first player to take 3 grids vertically, horizontallyor diagonally will be the winner.
+If all 9 squares are filled and neither player can take 3 grids, the game will be draw.
+​
+​
+## How to play
+1. To start the game, input any key
+2. Enter the player's names
+3. Take a look at the board 
+4. Input the number from 1 to 9 to get the position where you want to take
+5. Taking turns to play the game with step 3 and 4
+6. If either player take 3 grids vertically, horizontally or diagonally first, the player is the winner
+7. If neither player can take 3 grids until the board is filled with players' symbols, the game is a tie
+8. If you want to play again, enter any key, otherwise, enter 'q' to quit the game
 
-The game starts by taking in the names of 2 players and uses either 'X' or 'O' as their player marker on the board. The board is a 3 X 3 grid and each player takes turn placing markers on the board, starting with the first player. The game ends if any player has a straight set of 3 characters horizontal, vertical or diagonal or if the board is full.
+## How to Test
+1. Clone the repo to your local folder
+2. cd into the folder
+3. install rspec by gem install rspec
+4. Run rspec .
+5. 13 examples, 0 failures will be output.
 
-<img alt="Tic-Tac-Toe" src="https://user-images.githubusercontent.com/50522273/65238556-c1ea9480-da91-11e9-9cfa-419906791309.png" width="300" height="300" style="margin: 10px auto;">
+​
+## Contributing
+​
+Contributions, issues, and feature requests are welcome!
+Feel free to check the [issues page](../../issues).
+​
 
+* [License]
 
-## **Rules of the game**
+## Prerequisites
 
-* A player can't play more than once during a turn.
-* A player can't play in an already taken space.
-* Once a winning sequence is reached, the game is over regardless of how many turns have passed
-* Once the board is full, game is over.
+Ruby,Text editor,Github profile and Git.
 
-## **Testing the game**
+## Authors
 
-In order to test the game, you will need to install rspec. Run `gem install rspec` in the terminal.
-Next, you will need to run the command `rspec spec/name_of_file_to_test`. You will be greeted with either a failure or success message depending on the test. Good luck with testing tictactoe.
+👤 **Murodjon000**
 
-
-## **Running the game**
-
-In order to run the game, you'll need to have ruby installed locally. Check [HERE](https://www.ruby-lang.org/en/documentation/installation/) to learn how to install ruby. 
-
-You will then have to Clone or download this repo. You can use `git clone https://github.com/addod19/RSpec-TicTacToe.git` on the terminal if you have git installed or just download it from github.
-
-Next, navigate the directory `cd RSpec-TicTacToe`. The directory has the following structure:
-* An assets folder that holders the images used in the README file.
-* A spec folder that holds all the specifications for the project, it contains the `player_spec`, `game_spec`, `board_spec` and `spec_helper` files.
-* A bin folder that holds the `main.rb` file.
-* A lib folder that holds `modules` and `classes` : `board.rb`, `game.rb` ad `player.rb`
-* A LICENSE.md and a README.md file.
-
-To run the game, first verify that you have ruby installed by running `ruby -v` or `ruby --version` you should see something like `ruby 2.6.0p0 (2018-12-25 revision 66547) [x86_64-linux]`, based on your version and OS.
-
-Next run `ruby bin/main.rb` or `cd bin; ruby main.rb`. This command tell ruby to run our `main.rb` file. You should be greated with the game interface.
+- GitHub: [@Murodjon000](https://github.com/Murodjon000)
+- Twitter: [@Murodjon](https://twitter.com/Murodjo91836152)
+- LinkedIn: [murodjon-tursunpulatov](https://www.linkedin.com/in/murodjon-tursunpulatov-5189481b3/)
 
 
-## **ENJOY!**
+## 🤝 Contributing
 
-## **Contributors**
+Contributions, issues and feature requests are welcome!
 
-* <a href="https://github.com/addod19" target="blank">Addo Daniel Larbi</a>
-* <a href="https://github.com/maya88en" target="blank">Maya Alaa Eldin Mohamed Elfeky</a>
+Feel free to check the issues page.
+
+Show your support
+
+Give a ⭐️ if you like this project!
+
+## 📝 License
+
+This project is a collaboration project. All rights are reserved for Murodjon.

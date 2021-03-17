@@ -1,49 +1,31 @@
-# frozen_string_literal: true
-
 class Board
-  attr_reader :grid
-  MARKER = '@ '
+  attr_accessor :board
 
-  def initialize(grid = nil)
-    @grid = grid || (0..8).each_with_object({}) { |n, g| g[n] = MARKER }
+  def initialize
+    @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 
-  def display
-    "
-    |          |
-    #{@grid[0]} | #{@grid[1]} | #{@grid[2]}
-    -----------
-    |          |
-    #{@grid[3]} | #{@grid[4]} | #{@grid[5]}
-    -----------
-    |          |
-    #{@grid[6]} | #{@grid[7]} | #{@grid[8]}
-    "
-  end
-
-  def place_marker(position, marker)
-    @grid[position - 1] = marker
-  end
-
-  def valid_selection?(position)
-    @grid[position - 1] == MARKER
-  end
-
-  def winning_lines
-    markers = @grid.values
-    [
-      markers.each_slice(3).to_a,
-      markers.each_slice(3).to_a.transpose,
-      [[markers[0], markers[4], markers[8]],
-       [markers[2], markers[4], markers[6]]]
-    ].flatten(1)
+  def draw?
+    @board.all? { |i| i.is_a?(String) }
   end
 
   def win?
-    winning_lines.any? { |line| line.all?('X') || line.all?('O') }
+    combinations = [
+      [@board[0], @board[1], @board[2]],
+      [@board[3], @board[4], @board[5]],
+      [@board[6], @board[7], @board[8]],
+      [@board[0], @board[3], @board[6]],
+      [@board[1], @board[4], @board[7]],
+      [@board[2], @board[5], @board[8]],
+      [@board[0], @board[4], @board[8]],
+      [@board[2], @board[4], @board[6]]
+    ]
+    combinations.any? do |combo|
+      combo.all? { |i| i == 'X' } || combo.all? { |i| i == 'O' }
+    end
   end
 
-  def tie?
-    !win? && @grid.values.none?(MARKER)
+  def update_board(current_player, position, player1, player2)
+    @board[position - 1] = current_player == player1 ? player1.symbol : player2.symbol
   end
 end

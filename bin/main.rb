@@ -1,50 +1,34 @@
 #!/usr/bin/env ruby
-# frozen_string_literal: true
 
-require_relative '../lib/game'
-require_relative '../lib/board'
 require_relative '../lib/player'
+require_relative '../lib/board'
+require_relative '../lib/game'
 
-# Main game loop
-# rubocop:disable Metrics/BlockLength
+new_game = Game.new
+new_game.display_instruction
+abort if new_game.player_response == 'q'
+
 loop do
-  system 'clear'
-  game = Game.new
-  puts 'Welcome to Tic-Tac-Toe!'
+  player1, player2 = new_game.player_name
+  game_board = Board.new
+  player1 = Player.new(player1, 'X')
+  player2 = Player.new(player2, 'O')
 
-  player_names = []
-  2.times do |i|
-    print "Please enter name of player #{i + 1}: "
-    player_names << gets.chomp
-  end
+  new_game.display_name_symbol(player1, player2)
+  new_game.display_board(game_board.board)
+  current_player = player1
 
-  game.player1.name = player_names[0]
-  game.player2.name = player_names[1]
-
-  # Player turn loop
   loop do
-    game.switch_player
-    system 'clear'
-    puts game.board.display
+    puts "#{current_player.symbol} #{current_player.name}: "
+    puts 'which position do you want to take?:'
+    position = gets.chomp.to_i
+    position = new_game.validate_position(position, game_board.board)
+    game_board.update_board(current_player, position, player1, player2)
 
-    selection = ''
-    loop do
-      puts "#{game.current_player.name}(#{game.current_player.marker}), it's your turn."
-      print 'Enter your selection (1-9): '
-      selection = gets.chomp.to_i
-      break if game.board.valid_selection?(selection) && (1..9).include?(selection)
+    break if new_game.game_status?(game_board, current_player)
 
-      puts 'Sorry, that selection is invalid!'
-    end
-
-    game.turn(selection)
-    break unless game.state == :active
+    new_game.display_board(game_board.board)
+    current_player = player1.switch_player(current_player, player2)
   end
-  system 'clear'
-  puts game.board.display
-
-  puts game.state == :win ? "#{game.current_player.name} wins!" : "It's a draw!"
-
-  print 'Would you like to play again? (y/n): '
-  break unless gets.chomp.downcase.start_with?('y')
+  break if new_game.player_response == 'q'
 end
