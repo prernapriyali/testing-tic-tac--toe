@@ -1,91 +1,91 @@
 # frozen_string_literal: true
 
-require_relative '../lib/board'
 require_relative '../lib/player'
+require_relative '../lib/board'
+require_relative '../lib/game'
 
-describe Board do
-  subject(:table) { described_class.new }
-
-  describe '#initialize' do
-    # Initialize -> No test necessary
+RSpec.describe Board do
+  let!(:board) { Board.new }
+  let!(:tie) do
+    Board.new(
+      1 => 'X', 2 => 'X', 3 => 'O',
+      4 => 'O', 5 => 'X', 6 => 'X',
+      7 => 'X', 8 => '0', 9 => 'O'
+    )
   end
-
-  describe '#make_move?' do
-    # Public Script Method -> No test necessary
-  end
-
-  describe '#valid_move?' do
-    it 'sould return true when the move is between 1 & 9' do
-      expect(table.valid_move?(5)).to be true
-    end
-
-    it 'sould return false when the move is bigger than 9' do
-      expect(table.valid_move?(12)).to be false
-    end
-
-    it 'sould return false when the move is less than 1' do
-      expect(table.valid_move?(0)).to be false
-    end
-  end
-
-  describe '#valid_position?' do
-    it 'sould return true when the board position with the index equal to move (-1) is a space' do
-      table.board = ['X', 'O', 'X', 'O', 'X', ' ', 'X', 'O', 'X']
-      expect(table.valid_position?(6)).to be true
-    end
-
-    it 'sould return false when the board position with the index equal to move (-1) is a not a space' do
-      table.board = ['X', 'O', 'X', 'O', 'X', ' ', 'X', 'O', 'X']
-      expect(table.valid_position?(3)).to be false
+  context 'when a new board is created' do
+    describe '#initialize' do
+      it 'should create a new empty board' do
+        board = Board.new
+        expect(board.grid[0]).to eq '@ '
+      end
+      it 'should create a board with a given grid' do
+        tie = Board.new(
+          1 => 'X', 2 => 'X', 3 => 'O',
+          4 => 'O', 5 => 'X', 6 => 'X',
+          7 => 'X', 8 => '0', 9 => 'O'
+        )
+        expect(tie.grid[1]).to eq 'X'
+      end
     end
   end
-
-  describe '#apply_move' do
-    let(:player) { instance_double(Player, { name: 'texas', letter: 'X' }) }
-
-    it 'should  place the move of the player on the board' do
-      expect { table.apply_move(3, player) }.to change { table.board[2] }.to('X')
+  context 'display game board' do
+    describe '#display' do
+      it 'should display grid length' do
+        expect(board.grid.length).to eq(9)
+      end
     end
   end
-
-  describe '#increase_moves_counter' do
-    it 'should increment the moves by one when the method is called' do
-      expect { table.increase_moves_counter }.to change { table.moves }.by(1)
+  context 'check place selection' do
+    describe '#valid_selection' do
+      it 'should return true when select a valid position' do
+        board = Board.new
+        expect(board.valid_selection?(8)).to eq true
+      end
+      it 'should return false when select a valid position' do
+        board = Board.new
+        expect(board.valid_selection?(10)).to eq false
+      end
     end
   end
-
-  describe '#test_win' do
-    let(:player) { instance_double(Player, { name: 'texas', letter: 'X' }) }
-    let(:player2) { instance_double(Player, { name: 'arizona', letter: 'O' }) }
-
-    it 'should return true if one of the win cases is available' do
-      table.apply_move(1, player)
-      table.apply_move(2, player2)
-      table.apply_move(5, player)
-      table.apply_move(3, player2)
-      table.apply_move(9, player)
-      expect(table.test_win).to be true
-    end
-
-    it 'should return false if none of the win cases is available' do
-      table.apply_move(4, player)
-      table.apply_move(2, player2)
-      table.apply_move(5, player)
-      table.apply_move(3, player2)
-      table.apply_move(9, player)
-      expect(table.test_win).to be false
+  context 'check for place marker' do
+    describe '#place_marker' do
+      it 'should place marker at the right position' do
+        board = Board.new
+        expect(board.place_marker(5, 'X')).to eql(board.grid[4])
+      end
     end
   end
-
-  describe '#draw?' do
-    it 'should return true when the moves are equal to 9' do
-      table.moves = 9
-      expect(table.draw?).to be true
+  context 'check for winning lines' do
+    describe '#winning_lines' do
+      it 'should win at the right values' do
+        dbl = double(board)
+        allow(dbl).to receive(:winning_lines).and_return('win')
+      end
     end
-
-    it 'should return false when the moves are different than 9' do
-      table.moves = 5
-      expect(table.draw?).to be false
+  end
+  context 'check for win' do
+    describe '#win' do
+      it 'should return win if game won' do
+        dbl = double(board)
+        allow(dbl).to receive(:win).and_return('Player won')
+      end
+    end
+  end
+  context 'check for tie' do
+    describe '#tie' do
+      it 'should return tie if no win' do
+        dbl = double(board)
+        allow(dbl).to receive(:tie).and_return('Game is tie')
+      end
+    end
+  end
+  context 'check for display' do
+    describe '#display' do
+      it 'check if two strings are equal' do
+        dbl = double(board)
+        allow(dbl).to receive(:display).and_return(@grid)
+      end
     end
   end
 end

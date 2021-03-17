@@ -1,73 +1,50 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require_relative '../lib/game'
 require_relative '../lib/board'
 require_relative '../lib/player'
 
-def instructions
-  system('clear')
-  puts "You will have a 3x3 board and player 1 will have the first turn\n"
-  puts "When it's your turn enter the number of the square that you want to play (between 1 and 9)"
-  puts "Don't choose squares that are already occupied\n\n"
-  puts '    -------------'
-  puts '    | 1 | 2 | 3 |'
-  puts '    -------------'
-  puts '    | 4 | 5 | 6 |'
-  puts '    -------------'
-  puts '    | 7 | 8 | 9 |'
-  puts '    -------------'
-  puts "\nThe winner is the first one to form a line with 3 symbols vertically, horizontally or diagonally\n\n"
-  puts 'Press Enter to continue'
-  gets.chomp
-end
-
-system('clear')
-puts 'Welcome to Tic-Tac-Toe by Aymen and Patrick'
-
-puts 'Player 1, please enter your name:'
-player1 = Player.new(gets.chomp, 'X')
-puts "Hello, #{player1.name}, you are '#{player1.letter}'\n\n"
-
-puts 'Player 2, please enter your name:'
-player2 = Player.new(gets.chomp, 'O')
-puts "Hello, #{player2.name}, you are '#{player2.letter}'\n\n"
-
-puts "Enter 'y' if you want to see the instructions (Press enter to continue)"
-instructions if gets.chomp.downcase == 'y'
-system('clear')
-
-b = Board.new
-puts 'Building your board...'
-
-winner = false
-b.build
+# Main game loop
+# rubocop:disable Metrics/BlockLength
 loop do
-  puts "\n#{player1.name}, it's your move\n"
-  puts 'invalid move! please enter a number between 1 and 9' until b.make_move?(gets.chomp.to_i, player1)
-  system('clear')
-  puts "\n"
-  b.show
-  if b.win?
-    winner = player1.name
-    break
-  elsif b.draw?
-    break
-  end
-  puts "\n#{player2.name}, it's your move\n"
-  puts 'invalid move! please enter a number between 1 and 9' until b.make_move?(gets.chomp.to_i, player2)
-  system('clear')
-  puts "\n"
-  b.show
-  if b.win?
-    winner = player2.name
-    break
-  elsif b.draw?
-    break
-  end
-end
+  system 'clear'
+  game = Game.new
+  puts 'Welcome to Tic-Tac-Toe!'
 
-puts winner ? "\nCongratulations #{winner}!" : "\nIt's a draw, nobody won!"
-puts "Thank you for playing !\n\n\n\n"
-puts 'Sleeping...'
-sleep(3)
-puts 'Good night'
+  player_names = []
+  2.times do |i|
+    print "Please enter name of player #{i + 1}: "
+    player_names << gets.chomp
+  end
+
+  game.player1.name = player_names[0]
+  game.player2.name = player_names[1]
+
+  # Player turn loop
+  loop do
+    game.switch_player
+    system 'clear'
+    puts game.board.display
+
+    selection = ''
+    loop do
+      puts "#{game.current_player.name}(#{game.current_player.marker}), it's your turn."
+      print 'Enter your selection (1-9): '
+      selection = gets.chomp.to_i
+      break if game.board.valid_selection?(selection) && (1..9).include?(selection)
+
+      puts 'Sorry, that selection is invalid!'
+    end
+
+    game.turn(selection)
+    break unless game.state == :active
+  end
+  system 'clear'
+  puts game.board.display
+
+  puts game.state == :win ? "#{game.current_player.name} wins!" : "It's a draw!"
+
+  print 'Would you like to play again? (y/n): '
+  break unless gets.chomp.downcase.start_with?('y')
+end
